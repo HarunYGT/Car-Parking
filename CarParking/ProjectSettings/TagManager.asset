@@ -9,6 +9,7 @@ TagManager:
   - Car
   - StartPoint
   - Diamond
+  - Park
   layers:
   - Default
   - TransparentFX

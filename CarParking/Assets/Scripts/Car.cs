@@ -7,6 +7,7 @@ public class Car : MonoBehaviour
     public bool moveForward;
     bool startPointCheck = false;
     public GameObject[] trails;
+    public GameObject particlePoint;
 
     public Transform parent;
     public GameManager gameManager;
@@ -26,35 +27,49 @@ public class Car : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.CompareTag("StartPoint"))
+        if(collision.gameObject.CompareTag("Parking"))
         {
-            startPointCheck = true;
-            gameManager.startPoint.SetActive(false);
-        }
-        else if(collision.gameObject.CompareTag("Parking"))
-        {
-            moveForward=false;
+            CarTechnic();
             transform.SetParent(parent);
-            trails[0].SetActive(false);
-            trails[1].SetActive(false);
-            GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
             gameManager.GetNewCar();
 
         }
-        else if(collision.gameObject.CompareTag("Mid"))
-        {
-            Destroy(gameObject); // Lose Canvas 
-        }
         else if (collision.gameObject.CompareTag("Car"))
         {
-            //Lose Canvas 
+            gameManager.Crash.transform.position = particlePoint.transform.position;
+            gameManager.Crash.Play();
+            CarTechnic();   
+            gameManager.Failed();
         }
-        else if(collision.gameObject.CompareTag("Diamond"))
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.CompareTag("StartPoint"))
+        {
+            startPointCheck = true;
+        }
+        else if (other.CompareTag("Diamond"))
         {
             gameManager.diamondNum++;
-            Destroy(collision.gameObject);
+            other.gameObject.SetActive(false);
+            gameManager.Sounds[0].Play();
         }
-            
-
+        else if(other.CompareTag("Mid"))
+        {
+            gameManager.Crash.transform.position = particlePoint.transform.position;
+            gameManager.Crash.Play();
+            CarTechnic();
+            gameManager.Failed();
+        }
+        else if(other.CompareTag("Park"))
+        {
+            other.gameObject.GetComponent<Stop>().Parking.SetActive(true);
+        }
+    }
+    void CarTechnic()
+    {
+        moveForward=false;
+        trails[0].SetActive(false);
+        trails[1].SetActive(false);
     }
 }
