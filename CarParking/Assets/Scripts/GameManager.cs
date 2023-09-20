@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Platform Settings")]
     public GameObject Platform_1;
+    public GameObject Platform_Circle;
     public float[] rotateSpeed;
     bool isRotate;
 
@@ -54,7 +55,11 @@ public class GameManager : MonoBehaviour
             panels[3].SetActive(true);
         }
         if(isRotate)
+        {
             Platform_1.transform.Rotate(new Vector3(0,0,rotateSpeed[0]),Space.Self);
+            Platform_Circle.transform.Rotate(new Vector3(0,0,rotateSpeed[1]),Space.Self);
+        }
+           
 
     }
 
