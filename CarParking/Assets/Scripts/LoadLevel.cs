@@ -7,6 +7,11 @@ public class LoadLevel : MonoBehaviour
 {
     void Start()
     {
+        if(!PlayerPrefs.HasKey("Diamond"))
+        {
+            PlayerPrefs.SetInt("Diamond",0);
+            PlayerPrefs.SetInt("Level",1);
+        }
         SceneManager.LoadScene(PlayerPrefs.GetInt("Level"));
     }
 }

@@ -24,16 +24,18 @@ public class GameManager : MonoBehaviour
     public GameObject Platform_Circle;
     public float[] rotateSpeed;
     bool isRotate;
+    public bool isRising;
 
     [Header("Level Settings")]
     public int diamondNum;
     public ParticleSystem Crash;
     public AudioSource[] Sounds;
-
+    bool touchLock;
     int remainCarNum;
 
     void Start()
     {
+        touchLock = true;
         isRotate = true;
         FirstSetup();
         remainCarNum = howManyCars;
@@ -44,20 +46,29 @@ public class GameManager : MonoBehaviour
     }
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.B))
+        if(Input.touchCount >0)
         {
-            Cars[activeCarIndex].GetComponent<Car>().moveForward = true;
-            activeCarIndex++;
-        }
-        if(Input.GetKeyDown(KeyCode.H))
-        {
-            panels[0].SetActive(false); 
-            panels[3].SetActive(true);
+            Touch touch = Input.GetTouch(0);
+            if(touch.phase == TouchPhase.Began) 
+            {
+                if(touchLock)
+                {  
+                    panels[0].SetActive(false); 
+                    panels[3].SetActive(true);
+                    touchLock = false;
+                }
+                else
+                {
+                    Cars[activeCarIndex].GetComponent<Car>().moveForward = true;
+                    activeCarIndex++;
+                }
+            }
         }
         if(isRotate)
         {
             Platform_1.transform.Rotate(new Vector3(0,0,rotateSpeed[0]),Space.Self);
-            Platform_Circle.transform.Rotate(new Vector3(0,0,rotateSpeed[1]),Space.Self);
+            if(Platform_Circle != null)
+                Platform_Circle.transform.Rotate(new Vector3(0,0,rotateSpeed[1]),Space.Self);
         }
            
 
@@ -130,11 +141,6 @@ public class GameManager : MonoBehaviour
       //Data Management
     public void FirstSetup()
     {
-        if(!PlayerPrefs.HasKey("Diamond"))
-        {
-            PlayerPrefs.SetInt("Diamond",0);
-            PlayerPrefs.SetInt("Level",1);
-        }
         texts[0].text = PlayerPrefs.GetInt("Diamond").ToString();
         texts[1].text = "LEVEL: " + SceneManager.GetActiveScene().name;
     }

@@ -4119,8 +4119,8 @@ Camera:
   m_GameObject: {fileID: 963194225}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 1, g: 1, b: 1, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -4303,7 +4303,7 @@ GameObject:
   - component: {fileID: 982468195}
   - component: {fileID: 982468194}
   m_Layer: 0
-  m_Name: Ocean50x50W750H750
+  m_Name: Water
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4737,6 +4737,7 @@ MonoBehaviour:
   rotateSpeed:
   - 0.5
   - -0.7
+  isRising: 0
   diamondNum: 0
   Crash: {fileID: 1617327814650215999}
   Sounds:

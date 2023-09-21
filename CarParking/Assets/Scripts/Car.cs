@@ -8,6 +8,8 @@ public class Car : MonoBehaviour
     bool startPointCheck = false;
     public GameObject[] trails;
     public GameObject particlePoint;
+    float riseValue;
+    bool risePlatform;
 
     public Transform parent;
     public GameManager gameManager;
@@ -24,6 +26,17 @@ public class Car : MonoBehaviour
             transform.Translate(3f*Time.deltaTime*transform.forward);  
         if(moveForward)
             transform.Translate(15f*Time.deltaTime*transform.forward);        
+        if(risePlatform)
+        {
+            if(riseValue > gameManager.Platform_1.transform.position.y)
+            {
+                gameManager.Platform_1.transform.position = Vector3.Lerp(gameManager.Platform_1.transform.position,new Vector3(gameManager.Platform_1.transform.position.x,
+                gameManager.Platform_1.transform.position.y+1.3f,gameManager.Platform_1.transform.position.z),0.10f);
+            }
+            else
+                risePlatform = false;
+            
+        }
     }
     private void OnCollisionEnter(Collision collision)
     {
@@ -31,6 +44,11 @@ public class Car : MonoBehaviour
         {
             CarTechnic();
             transform.SetParent(parent);
+            if(gameManager.isRising)
+            {
+                riseValue = gameManager.Platform_1.transform.position.y + 1.3f;
+                risePlatform = true;
+            }
             gameManager.GetNewCar();
 
         }
